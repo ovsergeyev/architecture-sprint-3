@@ -1,5 +1,6 @@
 # Базовая настройка
 
+
 ## Запуск minikube
 
 [Инструкция по установке](https://minikube.sigs.k8s.io/docs/start/)
