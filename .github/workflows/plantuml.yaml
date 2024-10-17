@@ -15,7 +15,7 @@ jobs:
         uses: rotaract/plantuml-action@v1
         with:
           format: svg
-          pattern: 'docs/puml_diagrams/*.puml'
+          pattern: 'mkdoc/docs/puml_diagrams/*.puml'
 
       - name: Upload Diagrams
         uses: actions/upload-artifact@v4
