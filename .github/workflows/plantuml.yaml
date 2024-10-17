@@ -22,6 +22,8 @@ jobs:
 
       - name: Удаляем старые диаграммы
         run: rm -f mkdoc/docs/generated_diagrams/*.svg
+
+      - name: Удаляем старые диаграммы 2
         run: rm -f mkdoc/docs/generated_diagrams/*.png
 
       - name: Move SVG files to the target directory
