@@ -1,0 +1,19 @@
+@startuml
+title SmartHomeMonolith Context Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml
+
+Person(client, "Клиент", "Может включать выключать отопление. Устанавливать и просматривать температуру.")
+
+System(SmartHomeMonolith, "Smart Home Monolith", "Система управления и мониторинга температуры")
+
+System_Ext(sensors, "Sensors", "Датчики. Отправляют текущую температуру по запросу")
+System_Ext(heatingDevices, "Устройства обогрева", "Имеют функцию включения и выключения")
+
+Rel(client, SmartHomeMonolith, "Просмотр температуры, включение выключение отопления, выставление желаемой температуры")
+Rel(SmartHomeMonolith, sensors, "Получение данных о температуре")
+Rel(SmartHomeMonolith, heatingDevices, "Отправка команд")
+
+@enduml

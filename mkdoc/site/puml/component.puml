@@ -1,0 +1,49 @@
+@startuml
+title C4 Component Diagram
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "Client", "Пользователь системы")
+
+System_Boundary(system, "Smart Home Ecosystem"){
+  Container_Boundary(client_apps, "Client Apps"){
+    Container(webApp, "Web App", $descr="Предоставляет клиентам доступ к системе")
+    Container(mobileApp, "Mobile App", $descr="Предоставляет клиентам доступ к системе")
+  }
+
+  Container(apiGateway, "API Gateway", $techn="Kusk", $descr="Маршрутизация запросов")
+ 
+  Container_Boundary(managmentBoundary, "Managment"){
+   Container(deviceManagment, "Device Managment", $techn="Подсистема: Python", $descr="Управление устройствами")
+   ContainerDb(dbDeviceManagment, "Database Device Managment", $techn="Подсистема: Postgres", $descr="База для сервиса Device Managment")
+  }
+
+  Container_Boundary(telemetryBoundary, "Telemetry"){
+    Container(monitoring, "Telemetry", $techn="Python", $descr="Получение и обработка информации с датчиков")
+    ContainerDb(dbSensors, "Database Temperature from sensors", $techn="InfluxDB", $descr="База для хранения данных с датчиков температуры")
+  }
+  
+  ContainerQueue(kafka, "Broker", $techn="Kafka", $descr="Шина для интеграции микросервисов")
+  
+}
+
+Container_Ext(deviceHeating, "Устройство обогрева", $descr="Имеет функции включения и выключения")
+Container_Ext(sensorTemperature, "Датчик температуры", $descr="Отправляет текущую температуру по запросу")
+
+Rel(user, webApp, "Взаимодействие с клиентским приложением")
+Rel(user, mobileApp, "Взаимодействие с клиентским приложением")
+
+Rel(webApp, apiGateway, "[REST API]")
+Rel(mobileApp, apiGateway, "[REST API]")
+
+Rel(apiGateway, deviceManagment, "[REST API]")
+Rel(apiGateway, monitoring, "[REST API]")
+
+Rel(monitoring, sensorTemperature, "Получение данных с датчика")
+BiRel(monitoring, dbSensors, "Чтение и запись в базу")
+Rel(monitoring, kafka, "Публикация данных")
+Rel(deviceManagment, deviceHeating, "Включение и выключение обогрева")
+BiRel(deviceManagment, dbDeviceManagment, "Чтение и запись в базу")
+Rel(deviceManagment, kafka, "Подписка на события")
+
+@enduml
