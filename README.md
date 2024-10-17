@@ -1,85 +1,42 @@
-# Базовая настройка
+# 1 Анализ и проектирование
+## 1.1.1 Функциональность Smart Home Monolith:
 
-## Запуск minikube
+### Управление отоплением:
 
-[Инструкция по установке](https://minikube.sigs.k8s.io/docs/start/)
+- Пользователи могут удалённо включать/выключать отопление в своих домах. Методы turn-on, turn-of.
+- Пользователи могут устанавливать желаемую температуру. Метод set-temperature
+- Система поддерживает заданную температуру.
 
-```bash
-minikube start
-```
+### Мониторинг температуры:
 
-## Добавление токена авторизации GitHub
+- Система получает данные о температуре с датчиков, установленных в домах.
+- Пользователи могут просматривать текущую температуру в своих домах через веб-интерфейс.
 
-[Получение токена](https://github.com/settings/tokens/new)
+## 1.1.2 Архитектура монолитного приложения
+- Язык программирования: Java
+- База данных: PostgreSQL
+- Архитектура: Монолитная, все компоненты системы (обработка запросов, бизнес-логика, работа с данными) находятся в рамках одного приложения.
+- Взаимодействие: Синхронное, запросы обрабатываются последовательно.
+- Масштабируемость: Ограничена, так как монолит сложно масштабировать по частям.
+- Развертывание: Требует остановки всего приложения.
 
-```bash
-kubectl create secret docker-registry ghcr --docker-server=https://ghcr.io --docker-username=<github_username> --docker-password=<github_token> -n default
-```
+## 1.1.3 Домены и границы контекстов в системе
+### Домен: Управление устройствами
+  * Поддомен: Управление отоплением
+    - Контекст: Включение, выключение реле
+    - Контекст: Установка целевой температуры
+  * Поддомен: Автоматическое поддержание температуры
+    - Контекст: Регулировка подачи тепла
+### Домен: Мониторинг температуры
+  * Поддомен: Получение температуры с датчиков
+    - Контекст: Получение данных с датчиков температуры
+  * Поддомен: Отображение данных пользователю
+    - Контекст: Отображение текущей температуры в доме пользователя
 
-## Установка API GW kusk
+## 1.1.4 Диаграмма C4 Context. Взаимодействие монолитного приложения с внешним миром
+  [Диаграмма C4 Context As Is](mkdoc/docs/images_diagrams/context_as_is.png)
+  Также развернута документация в папке mkdocs.
 
-[Install Kusk CLI](https://docs.kusk.io/getting-started/install-kusk-cli)
+## 1.2.1
+  
 
-```bash
-kusk cluster install
-```
-
-## Смена адреса образа в helm chart
-
-После того как вы сделали форк репозитория и у вас в репозитории отработал GitHub Action. Вам нужно получить адрес образа <https://github.com/><github_username>/architecture-sprint-3/pkgs/container/architecture-sprint-3
-
-Он выглядит таким образом
-```ghcr.io/<github_username>/architecture-sprint-3:latest```
-
-Замените адрес образа в файле `helm/smart-home-monolith/values.yaml` на полученный файл:
-
-```yaml
-image:
-  repository: ghcr.io/<github_username>/architecture-sprint-3
-  tag: latest
-```
-
-## Настройка terraform
-
-[Установите Terraform](https://yandex.cloud/ru/docs/tutorials/infrastructure-management/terraform-quickstart#install-terraform)
-
-Создайте файл ~/.terraformrc
-
-```hcl
-provider_installation {
-  network_mirror {
-    url = "https://terraform-mirror.yandexcloud.net/"
-    include = ["registry.terraform.io/*/*"]
-  }
-  direct {
-    exclude = ["registry.terraform.io/*/*"]
-  }
-}
-```
-
-## Применяем terraform конфигурацию
-
-```bash
-cd terraform
-terraform init
-terraform apply
-```
-
-## Настройка API GW
-
-```bash
-kusk deploy -i api.yaml
-```
-
-## Проверяем работоспособность
-
-```bash
-kubectl port-forward svc/kusk-gateway-envoy-fleet -n kusk-system 8080:80
-curl localhost:8080/hello
-```
-
-## Delete minikube
-
-```bash
-minikube delete
-```
