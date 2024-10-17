@@ -17,8 +17,24 @@ jobs:
           format: svg
           pattern: 'mkdoc/docs/puml_diagrams/*.puml'
 
+      - name: List generated files
+        run: ls -R mkdoc/docs/puml_diagrams/
+
+      - name: Move SVG files to the target directory
+        run: |
+          mv mkdoc/docs/puml_diagrams/*.svg mkdoc/docs/generated_diagrams/
+
       - name: Upload Diagrams
         uses: actions/upload-artifact@v4
         with:
           name: diagrams-${{ github.event.head_commit.message }}
           path: 'mkdoc/docs/puml_diagrams/**/*.svg'
+
+      - name: Commit Diagrams
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add diagrams/**/*.png
+          git commit -m "Automated diagram generation"
+          git push origin main
+        if: success()
