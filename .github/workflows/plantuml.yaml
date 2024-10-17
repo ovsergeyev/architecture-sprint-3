@@ -20,6 +20,9 @@ jobs:
       - name: List generated files
         run: ls -R mkdoc/docs/puml_diagrams/
 
+      - name: Удаляем старые диаграммы
+        run: rm -rf mkdoc/docs/generated_diagrams/*
+
       - name: Move SVG files to the target directory
         run: |
           mv mkdoc/docs/puml_diagrams/*.svg mkdoc/docs/generated_diagrams/
