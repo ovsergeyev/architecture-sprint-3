@@ -24,11 +24,14 @@ jobs:
         run: |
           mv mkdoc/docs/puml_diagrams/*.svg mkdoc/docs/generated_diagrams/
 
-      - name: Upload Diagrams
-        uses: actions/upload-artifact@v4
-        with:
-          name: diagrams-${{ github.event.head_commit.message }}
-          path: 'mkdoc/docs/puml_diagrams/**/*.svg'
+      # - name: Upload Diagrams
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: diagrams-${{ github.event.head_commit.message }}
+      #     path: 'mkdoc/docs/puml_diagrams/**/*.svg'
+
+      - name: List generated files
+        run: ls -R mkdoc/docs/generated_diagrams/
 
       - name: Commit Diagrams
         run: |
