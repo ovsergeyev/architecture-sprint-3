@@ -21,4 +21,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: diagrams-${{ github.event.head_commit.message }}
-          path: 'docs/**/*.svg'
+          path: 'mkdoc/docs/puml_diagrams/**/*.svg'
