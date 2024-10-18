@@ -7,6 +7,20 @@ services:
     command: [ "/app.sh" ]
     volumes:
       - .:/fastapi_app
-    # command: [ "/src/docker/app.sh" ]
     ports:
       - "2000:8000"
+    depends_on:
+      - bd-device-managment
+
+  bd-device-managment:
+    container_name: bd-device-managment
+    image: postgres:15.1
+    ports: 5440
+    # Todo
+    environtment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=device-managment
+    volumes:
+      - pg_bd-device-managment:/var/lib/postresql/data/
+    
