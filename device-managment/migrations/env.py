@@ -10,7 +10,6 @@ from entities import UserEntity
 from entities import DeviceEntity
 from entities import HouseEntity
 from entities import SensorEntity
-from entities import TelemetryEntity
 from entities import TargetTemperatureEntity
 
 # this is the Alembic Config object, which provides
