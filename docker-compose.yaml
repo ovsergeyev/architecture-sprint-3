@@ -10,10 +10,10 @@ services:
     ports:
       - "2000:8000"
     depends_on:
-      - bd-device-managment
+      - db_device-managment
 
-  bd-device-managment:
-    container_name: bd-device-managment
+  db_device-managment:
+    container_name: db_device-managment
     image: postgres:15.1
     ports:
       - "5440:5440"
@@ -25,7 +25,8 @@ services:
     volumes:
       - pg_bd-device-managment:/var/lib/postresql/data/
 
-  influxdb2:
+  db_telemetry:
+    container_name: db_telemetry
     image: influxdb:2
     ports:
       - 8086:8086
