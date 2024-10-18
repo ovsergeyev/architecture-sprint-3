@@ -1,0 +1,72 @@
+@startuml
+title C4 Component Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "Client", "Пользователь системы")
+
+System_Boundary(system, "Smart Home Ecosystem"){
+  Container_Boundary(client_apps, "Client Apps"){
+    Container(webApp, "Web App", $descr="Предоставляет клиентам доступ к системе")
+    Container(mobileApp, "Mobile App", $descr="Предоставляет клиентам доступ к системе")
+  }
+
+  Container(apiGateway, "API Gateway", $techn="Kusk", $descr="Маршрутизация запросов"){
+    ' Component(kuskComponent, "Kusk", $descr="Получение входящих HTTP-запросов и маршрутизация")
+  }
+
+  Container_Boundary(managmentBoundary, "Managment"){
+    Container(deviceManagment, "Device Managment", $techn="Подсистема: Python", $descr="Управление устройствами"){
+      Component(deviceManagmentUserController, "Managment User Controller", $descr="Обработка запроса пользователя к устройствам")
+      Component(deviceManagmentService, "Managment Service", $descr="Бизнес логика")
+      Component(deviceManagmentKafkaComponent, "Managment Kafka Component", $descr="Получение данных с Kafka")
+      Component(deviceManagmentCommandController, "Managment Command Controller", $descr="Отправка команд на устройства")
+      Component(deviceManagmentRepository, "Managment Repository", $descr="Запросы к БД")
+    }
+    ContainerDb(dbDeviceManagment, "Database Device Managment", $techn="Подсистема: Postgres", $descr="База для сервиса Device Managment")
+  }
+
+  Container_Boundary(telemetryBoundary, "Telemetry"){
+    Container(monitoring, "Telemetry", $techn="Python", $descr="Получение и обработка информации с датчиков"){
+      Component(telemetryController, "Telemetry Controller", $descr="Обработка запросов пользователя к телеметрии")
+      Component(telemetryInputHandler, "Telemetry Input Handler", $descr="Обработчик входящей телеметрии")
+      Component(telemetryService, "Telemetry Service", $descr="Бизнес логика")
+      Component(telemetryRepository, "Telemetry Repository", $descr="Запросы к БД")
+    }
+    ContainerDb(dbSensors, "Database Temperature from sensors", $techn="InfluxDB", $descr="База для хранения данных с датчиков температуры")
+  }
+
+  ContainerQueue(kafka, "Broker", $techn="Kafka", $descr="Шина для интеграции микросервисов")
+
+}
+
+Container_Ext(deviceHeating, "Устройство обогрева", $descr="Имеет функции включения и выключения")
+Container_Ext(sensorTemperature, "Датчик температуры", $descr="Отправляет текущую температуру по запросу")
+
+Rel(user, webApp, "Взаимодействие с клиентским приложением")
+Rel(user, mobileApp, "Взаимодействие с клиентским приложением")
+
+Rel(webApp, apiGateway, "[REST API]")
+Rel(mobileApp, apiGateway, "[REST API]")
+
+Rel(apiGateway, deviceManagmentUserController, "[REST API]")
+Rel(apiGateway, telemetryController, "[REST API]")
+
+Rel(deviceManagmentUserController, deviceManagmentService, "")
+BiRel(deviceManagmentService, deviceManagmentRepository, "")
+Rel(deviceManagmentKafkaComponent, deviceManagmentService, "")
+Rel(deviceManagmentKafkaComponent, kafka, "Подписка на события")
+Rel(deviceManagmentService, deviceManagmentCommandController, "")
+Rel(deviceManagmentCommandController, deviceHeating, "Включение и выключение обогрева")
+BiRel(deviceManagmentRepository, dbDeviceManagment, "Чтение и запись в базу")
+
+Rel(telemetryInputHandler, sensorTemperature, "Получение данных с датчика")
+Rel(telemetryInputHandler, telemetryService, "")
+Rel(telemetryController, telemetryService, "")
+BiRel(telemetryService, telemetryRepository, "")
+BiRel(telemetryRepository, dbSensors, "Чтение и запись в базу")
+Rel(telemetryInputHandler, kafka, "Публикация данных")
+
+@enduml

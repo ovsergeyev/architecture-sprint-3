@@ -50,7 +50,7 @@
   TODO
 
   **Диаграмма контейнеров**
-  ![Диаграмма С4 Component v1](mkdoc/docs/generated_diagrams/C4%20Component%20v1.svg)
+  ![Диаграмма С4 Container v1](mkdoc/docs/generated_diagrams/C4%20Container%20v1.svg)
 
   •	Созданы C4 диаграммы на уровне контейнеров (Containers) и компонентов (Components), визуализирующие архитектуру системы.
 

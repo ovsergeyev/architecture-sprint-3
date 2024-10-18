@@ -12,10 +12,10 @@ System_Boundary(system, "Smart Home Ecosystem"){
   }
 
   Container(apiGateway, "API Gateway", $techn="Kusk", $descr="Маршрутизация запросов")
- 
+
   Container_Boundary(managmentBoundary, "Managment"){
-   Container(deviceManagment, "Device Managment", $techn="Подсистема: Python", $descr="Управление устройствами")
-   ContainerDb(dbDeviceManagment, "Database Device Managment", $techn="Подсистема: Postgres", $descr="База для сервиса Device Managment")
+    Container(deviceManagment, "Device Managment", $techn="Подсистема: Python", $descr="Управление устройствами")
+    ContainerDb(dbDeviceManagment, "Database Device Managment", $techn="Подсистема: Postgres", $descr="База для сервиса Device Managment")
   }
 
   Container_Boundary(telemetryBoundary, "Telemetry"){

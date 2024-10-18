@@ -1,5 +1,5 @@
 @startuml
-title SmartHomeMonolith Context Diagram
+title C4 Context Diagram
 
 top to bottom direction
 
