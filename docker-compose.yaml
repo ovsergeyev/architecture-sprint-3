@@ -9,8 +9,6 @@ services:
       - .:/fastapi_app
     ports:
       - "2000:8000"
-    networks:
-      - device-managment
     depends_on:
       - db_device-managment
 
@@ -24,8 +22,6 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=device-managment
-    networks:
-      - device-managment
     volumes:
       - pg_bd-device-managment:/var/lib/postresql/data/
 
@@ -66,6 +62,3 @@ volumes:
   influxdb2-data:
   influxdb2-config:
 
-networks:
-  device-managment:
-    driver: bridge
