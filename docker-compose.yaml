@@ -24,4 +24,7 @@ services:
       - POSTGRES_DB=device-managment
     volumes:
       - pg_bd-device-managment:/var/lib/postresql/data/
+
+volumes:
+  pg_bd-device-managment:
     
