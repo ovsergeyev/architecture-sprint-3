@@ -7,6 +7,10 @@ from alembic import context
 
 from database import Base
 from entities import UserEntity
+from entities import DeviceEntity
+from entities import HouseEntity
+from entities import SensorEntity
+from entities import TelemetryEntity
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
