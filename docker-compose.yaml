@@ -27,7 +27,7 @@ services:
     networks:
       - device-managment
     volumes:
-      - pg_bd-device-managment:/var/lib/postresql/data/
+      - pg_db-device-managment:/var/lib/postresql/data/
 
   db_telemetry:
     container_name: db_telemetry
