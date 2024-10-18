@@ -15,7 +15,8 @@ services:
   bd-device-managment:
     container_name: bd-device-managment
     image: postgres:15.1
-    ports: 5440
+    ports:
+      - "5440:5440"
     # Todo
     environtment:
       - POSTGRES_PASSWORD=postgres
