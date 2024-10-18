@@ -1,12 +1,15 @@
 from fastapi import FastAPI, APIRouter
+from schemas import SDevice
+from repositories.Managment import Managment
 
 app = FastAPI(
   title='Device Managment'
 )
 
 @app.post('/add_device')
-async def add_device():
-  return "add device"
+async def add_device(device: SDevice):
+  response = Managment.add(device)
+  return response
 
 @app.get('/status_device')
 async def status_device():

@@ -11,6 +11,7 @@ from entities import DeviceEntity
 from entities import HouseEntity
 from entities import SensorEntity
 from entities import TelemetryEntity
+from entities import TargetTemperatureEntity
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
