@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  device-managment:
+    container_name: device-managment
+    build: ./device-managment
+    command: [ "/app.sh" ]
+    volumes:
+      - .:/fastapi_app
+    # command: [ "/src/docker/app.sh" ]
+    ports:
+      - "2000:8000"
