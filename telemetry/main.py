@@ -33,7 +33,7 @@ async def write_sensor_data(serial_number: str, value: float):
 
   temperature = {"serial_number": serial_number, "value": value}
 
-  await producer.send_and_wait(settings.topic, json.dumps(temperature))
+  await producer.send_and_wait(settings.topic, json.dumps(temperature).encode('utf-8'))
   return {'status': 'ok'}
 
 @app.get('/last_temperature')
