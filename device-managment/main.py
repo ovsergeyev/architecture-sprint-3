@@ -10,7 +10,9 @@ app = FastAPI(
 @app.post('/add_device')
 async def add_device(device: SDevice):
   response = await Managment.add_device(device.model_dump())
-  return device
+  target_temperature = STargetTemperature(device_id=device.serial_number, temperature=18)
+  await Managment.add_target_temperature(target_temperature.model_dump())
+  return response
 
 @app.get('/status_device')
 async def status_device(serial_number: str):
