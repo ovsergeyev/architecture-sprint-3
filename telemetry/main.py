@@ -30,7 +30,7 @@ async def write_sensor_data(serial_number: str, value: float):
   point = Point("sensors").tag("serial_number", serial_number).field("value", value).time(datetime.utcnow())
   write_api.write(bucket='home', record=point.to_line_protocol())
 
-  await producer.send_and_wait(settings.topic(), {"serial_number": serial_number, "value": value})
+  await producer.send_and_wait(settings.topic, {"serial_number": serial_number, "value": value})
   return {'status': 'ok'}
 
 @app.get('/last_temperature')
