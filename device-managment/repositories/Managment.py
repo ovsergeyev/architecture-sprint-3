@@ -20,7 +20,7 @@ class Managment:
       query = insert(cls.device_model).values(**data).returning(cls.device_model.id)
       result = await session.execute(query)
       await session.commit()
-      # return result
+      return result.mappings().one_or_none()
 
   @classmethod
   async def find_device(cls, **filter_by):
