@@ -4,8 +4,7 @@ import asyncio
 import logging
 from config import settings
 
-KAFKA_BROKER = 'localhost:9092'  # Укажите ваш брокер
-TOPIC_NAME = 'your_topic'  # Укажите имя вашего топика
+logging.basicConfig(level=logging.INFO)
 
 async def consume():
     consumer = AIOKafkaConsumer(
@@ -18,6 +17,7 @@ async def consume():
     try:
         async for message in consumer:
             # Обработка сообщения
+            logging.info(f"Получено сообщение: {message.value.decode('utf-8')}")
             print(f"Получено сообщение: {message.value.decode('utf-8')}")
     finally:
         await consumer.stop()
