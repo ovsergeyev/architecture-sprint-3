@@ -1,6 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from influxdb_client import InfluxDBClient
-from aiokafka import AIOKafkaProducer
 
 class Settings(BaseSettings):
   MODE: str

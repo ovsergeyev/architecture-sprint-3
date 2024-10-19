@@ -3,10 +3,18 @@ from schemas.SDevice import SDevice, SChangeDevice
 from schemas.SSensor import SSensor
 from schemas.STargetTemperature import STargetTemperature
 from repositories.Managment import Managment
+from controllers.Command import consume
+from aiokafka import AIOKafkaConsumer
+import asyncio
 
 app = FastAPI(
   title='Device Managment'
 )
+
+@app.on_event("startup")
+async def startup_event():
+    # Запускаем consumer в фоновом режиме
+    asyncio.create_task(consume())
 
 @app.post('/add_device')
 async def add_device(device: SDevice):

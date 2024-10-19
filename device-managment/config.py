@@ -15,6 +15,14 @@ class Settings(BaseSettings):
   LOCAL_DB_PASS: str
   LOCAL_DB_NAME: str
 
+  KAFKA_HOST: str
+  KAFKA_PORT: int
+  KAFKA_TOPIC: str
+
+  LOCAL_KAFKA_HOST: str
+  LOCAL_KAFKA_PORT: int
+  LOCAL_KAFKA_TOPIC: str
+
   @property
   def DATABASE_URL(self):
     if self.MODE == "PROD":
@@ -23,6 +31,20 @@ class Settings(BaseSettings):
     if self.MODE == "LOCAL":
       print(f"postgresql+asyncpg://{self.LOCAL_DB_USER}:{self.LOCAL_DB_PASS}@{self.LOCAL_DB_HOST}:{self.LOCAL_DB_PORT}/{self.LOCAL_DB_NAME}")
       return f"postgresql+asyncpg://{self.LOCAL_DB_USER}:{self.LOCAL_DB_PASS}@{self.LOCAL_DB_HOST}:{self.LOCAL_DB_PORT}/{self.LOCAL_DB_NAME}"
+
+  @property
+  def topic(self):
+    if self.MODE == "PROD":
+      return self.KAFKA_TOPIC
+    if self.MODE == "LOCAL":
+      return self.LOCAL_KAFKA_TOPIC
+
+  @property
+  def kafka_address(self):
+    if self.MODE == "PROD":
+      return f"{self.KAFKA_HOST}:{self.KAFKA_PORT}"
+    if self.MODE == "LOCAL":
+      return f"{self.LOCAL_KAFKA_HOST}:{self.LOCAL_KAFKA_PORT}"
 
   model_config = SettingsConfigDict(env_file=".env")
 
