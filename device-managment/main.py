@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from schemas.SDevice import SDevice, SChangeDevice
+from schemas.SSensor import SSensor
 from schemas.STargetTemperature import STargetTemperature
 from repositories.Managment import Managment
 
@@ -25,6 +26,14 @@ async def status_device(serial_number: str):
 @app.put('/change_device_status')
 async def change_device_status(device: SChangeDevice):
   response = await Managment.update_device(device.model_dump())
+  return response
+
+@app.post('/add_sensor')
+async def add_sensor(sensor: SSensor):
+  existing_sensor = await Managment.find_sensor_by_serial_number(sensor.serial_number)
+  if existing_sensor:
+    raise HTTPException(status_code=400, detail="sensor is already registered")
+  response = await Managment.add_sensor(sensor.model_dump())
   return response
 
 @app.get('/get_target_temperature')

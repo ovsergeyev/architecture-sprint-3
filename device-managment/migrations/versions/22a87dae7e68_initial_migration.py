@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: 1479bf38bd5b
+Revision ID: 22a87dae7e68
 Revises: 
-Create Date: 2024-10-19 09:47:30.877271
+Create Date: 2024-10-19 09:57:48.423072
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '1479bf38bd5b'
+revision: str = '22a87dae7e68'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -32,8 +32,8 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('sensors',
-    sa.Column('serial_number', sa.Integer(), nullable=False),
-    sa.Column('device_id', sa.Integer(), nullable=False),
+    sa.Column('serial_number', sa.String(), nullable=False),
+    sa.Column('device_id', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('serial_number')
     )
     op.create_table('target_temperatures',
