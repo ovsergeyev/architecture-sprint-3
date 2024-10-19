@@ -9,6 +9,8 @@ services:
       - .:/fastapi_app
     ports:
       - "2000:8000"
+    environment:
+      - MODE=PROD
     networks:
       - device-managment
     depends_on:
