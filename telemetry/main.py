@@ -9,25 +9,21 @@ from config import settings
 client = settings.client
 write_api = client.write_api(write_options=SYNCHRONOUS)
 
-producer = settings.producer
+producer = None
 
 app = FastAPI(
   title='Telemetry API'
 )
 
-async def start_kafka_producer():
-    await producer.start()
-
-async def stop_kafka_producer():
-    await producer.stop()
-
 @app.on_event("startup")
 async def startup_event():
-    await start_kafka_producer()
+  global producer
+  producer = AIOKafkaProducer(boostrap_servers=settings.kafka_address())
+  await producer.start()
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    await stop_kafka_producer()
+  await producer.stop()
 
 @app.get('/set_current_temperature')
 async def write_sensor_data(serial_number: str, value: float):

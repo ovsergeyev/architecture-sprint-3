@@ -29,22 +29,20 @@ class Settings(BaseSettings):
       return InfluxDBClient(url=f"http://{self.DB_HOST}:{self.DB_PORT}", token=self.DB_TOKEN, org=self.DB_ORG)
     if self.MODE == "LOCAL":
       return InfluxDBClient(url=f"http://{self.LOCAL_DB_HOST}:{self.LOCAL_DB_PORT}", token=self.LOCAL_DB_TOKEN, org=self.LOCAL_DB_ORG)
-  
-  @property
-  def producer(self):
-    if self.MODE == "PROD":
-      return AIOKafkaProducer(bootstrap_servers=f"{self.KAFKA_HOST}:{self.KAFKA_PORT}")
-      # return AIOKafkaProducer(bootstrap_servers=f"{self.KAFKA_HOST}:{self.KAFKA_PORT}")
-    if self.MODE == "LOCAL":
-      # return AIOKafkaProducer(bootstrap_servers=f"{self.LOCAL_KAFKA_HOST}:{self.LOCAL_KAFKA_PORT}")
-      return AIOKafkaProducer(bootstrap_servers="192.169.10.10:29092")
-    
+
   @property
   def topic(self):
     if self.MODE == "PROD":
       return self.KAFKA_TOPIC
     if self.MODE == "LOCAL":
       return self.LOCAL_KAFKA_TOPIC
+
+  @property
+  def kafka_address(self):
+    if self.MODE == "PROD":
+      return f"{self.KAFKA_HOST}:{self.KAFKA_PORT}"
+    if self.MODE == "LOCAL":
+      return f"{self.LOCAL_KAFKA_HOST}:{self.LOCAL_KAFKA_PORT}"
 
   model_config = SettingsConfigDict(env_file=".env")
 
