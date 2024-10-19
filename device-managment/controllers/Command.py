@@ -11,7 +11,7 @@ async def consume():
         settings.topic,
         bootstrap_servers=settings.kafka_address,
         auto_offset_reset='earliest',
-        enable_auto_commit=True,
+        enable_auto_commit=False,
     )
     await consumer.start()
     try:
@@ -19,6 +19,7 @@ async def consume():
             # Обработка сообщения
             logging.info(f"Получено сообщение: {message.value.decode('utf-8')}")
             print(f"Получено сообщение: {message.value.decode('utf-8')}")
+            await consumer.commit()
     finally:
         await consumer.stop()
 
