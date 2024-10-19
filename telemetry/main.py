@@ -18,8 +18,8 @@ def write_sensor_data(serial_number: str, value: float):
   write_api.write(bucket='home', record=point.to_line_protocol())
   return {'status': 'ok'}
 
-@app.get('/latest_temperature')
-def get_latest_temperature(serial_number: str):
+@app.get('/last_temperature')
+def get_last_temperature(serial_number: str):
     query = f'''
     from(bucket: "home")
       |> range(start: -1h)  // Здесь вы можете изменить диапазон по необходимости
