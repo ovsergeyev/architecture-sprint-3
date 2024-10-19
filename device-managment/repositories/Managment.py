@@ -17,7 +17,7 @@ class Managment:
   @classmethod
   async def add_device(cls, data):
     async with async_session_maker() as session:
-      query = insert(cls.device_model).values(**data).returning(cls.device_model.id)
+      query = insert(cls.device_model).values(**data).returning(cls.device_model.serial_number)
       result = await session.execute(query)
       await session.commit()
       return result.mappings().one_or_none()
