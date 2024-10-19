@@ -18,7 +18,7 @@ app = FastAPI(
 @app.on_event("startup")
 async def startup_event():
   global producer
-  producer = AIOKafkaProducer(bootstrap_servers=settings.kafka_address)
+  producer = AIOKafkaProducer(bootstrap_servers="192.169.10.10:29092")
   await producer.start()
 
 @app.on_event("shutdown")
