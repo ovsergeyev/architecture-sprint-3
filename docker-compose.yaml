@@ -63,6 +63,8 @@ services:
       - type: volume
         source: influxdb2-config
         target: /etc/influxdb2
+    depends_on:
+      - kafka
 
   kong:
     container_name: kong
