@@ -5,6 +5,5 @@ from typing import Optional
 class DeviceEntity(Base):
   __tablename__ = 'devices'
 
-  id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-  serial_number: Mapped[str] = mapped_column(unique=True)
+  serial_number: Mapped[str] = mapped_column(primary_key=True)
   status: Mapped[Optional[bool]]
