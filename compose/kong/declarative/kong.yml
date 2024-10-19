@@ -2,7 +2,7 @@ _format_version: "1.1"
 
 services:
   - name: telemetry
-    url: http://telemetry:3000
+    url: http://telemetry:8000
     routes:
       - paths:
           - /telemetry
