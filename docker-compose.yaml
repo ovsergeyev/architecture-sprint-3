@@ -27,6 +27,19 @@ services:
     volumes:
       - pg_db-device-managment:/var/lib/postresql/data/
 
+  telemetry:
+    container_name: telemetry
+    build: ./telemetry
+    command: [ "/app.sh" ]
+    volumes:
+      - .:/fastapi_app
+    ports:
+      - "3000:8000"
+    environment:
+      - MODE=PROD
+    depends_on:
+      - db_telemetry
+
   db_telemetry:
     container_name: db_telemetry
     image: influxdb:2
