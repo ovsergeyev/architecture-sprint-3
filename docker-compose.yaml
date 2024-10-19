@@ -11,8 +11,6 @@ services:
       - "2000:8000"
     environment:
       - MODE=PROD
-    networks:
-      - device-managment
     depends_on:
       - db_device-managment
 
@@ -26,8 +24,6 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=db_device-managment
-    networks:
-      - device-managment
     volumes:
       - pg_db-device-managment:/var/lib/postresql/data/
 
@@ -103,6 +99,3 @@ volumes:
   influxdb2-data:
   influxdb2-config:
 
-networks:
-  device-managment:
-    driver: bridge
