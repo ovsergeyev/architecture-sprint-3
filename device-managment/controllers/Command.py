@@ -4,15 +4,13 @@ import asyncio
 import logging
 from config import settings
 
-config = settings.config
-
 KAFKA_BROKER = 'localhost:9092'  # Укажите ваш брокер
 TOPIC_NAME = 'your_topic'  # Укажите имя вашего топика
 
 async def consume():
     consumer = AIOKafkaConsumer(
-        config.topic,
-        bootstrap_servers=config.kafka_address,
+        settings.topic,
+        bootstrap_servers=settings.kafka_address,
         auto_offset_reset='earliest',
         enable_auto_commit=True,
     )
