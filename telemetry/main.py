@@ -1,21 +1,40 @@
 from fastapi import FastAPI, HTTPException
-from influxdb_client import InfluxDBClient, Point
+from influxdb_client import Point
 from influxdb_client.client.write_api import SYNCHRONOUS
+from aiokafka import AIOKafkaProducer
+import asyncio
 from datetime import datetime
 from config import settings
 
 client = settings.client
 write_api = client.write_api(write_options=SYNCHRONOUS)
 
+producer = settings.producer
+
 app = FastAPI(
   title='Telemetry API'
 )
 
+async def start_kafka_producer():
+    await producer.start()
+
+async def stop_kafka_producer():
+    await producer.stop()
+
+@app.on_event("startup")
+async def startup_event():
+    await start_kafka_producer()
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    await stop_kafka_producer()
+
 @app.get('/set_current_temperature')
-def write_sensor_data(serial_number: str, value: float):
+async def write_sensor_data(serial_number: str, value: float):
   point = Point("sensors").tag("serial_number", serial_number).field("value", value).time(datetime.utcnow())
-  # return point.to_line_protocol()
   write_api.write(bucket='home', record=point.to_line_protocol())
+
+  await producer.send_and_wait(settings.topic(), {"serial_number": serial_number, "value": value})
   return {'status': 'ok'}
 
 @app.get('/last_temperature')

@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.9"
 influxdb-client = "^1.46.0"
+aiokafka = "^0.11.0"
 
 
 [build-system]
