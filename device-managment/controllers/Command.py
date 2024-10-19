@@ -10,6 +10,7 @@ async def consume():
     consumer = AIOKafkaConsumer(
         settings.topic,
         bootstrap_servers=settings.kafka_address,
+        group_id="device-managment-group",
         auto_offset_reset='earliest',
         enable_auto_commit=False,
     )
