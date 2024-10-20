@@ -1,0 +1,95 @@
+openapi: 3.0.0
+info:
+  title: Telemetry API
+  version: 0.1.0
+paths:
+  /set_current_temperature:
+    post:
+      summary: Write Sensor Data
+      operationId: write_sensor_data_set_current_temperature_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/STemperature'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /last_temperature:
+    get:
+      summary: Get Last Temperature
+      operationId: get_last_temperature_last_temperature_get
+      parameters:
+        - name: serial_number
+          in: query
+          required: true
+          schema:
+            type: string
+            title: Serial Number
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    STemperature:
+      properties:
+        serial_number:
+          type: string
+          title: Serial Number
+        value:
+          type: number
+          title: Value
+      type: object
+      required:
+        - serial_number
+        - value
+      title: STemperature
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError

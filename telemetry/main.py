@@ -33,7 +33,7 @@ async def write_sensor_data(temperature: STemperature):
   write_api.write(bucket='home', record=point.to_line_protocol())
 
   await producer.send_and_wait(settings.topic, temperature.model_dump_json().encode('utf-8'))
-  return {'status': 'ok'}
+  return True
 
 @app.get('/last_temperature')
 def get_last_temperature(serial_number: str):

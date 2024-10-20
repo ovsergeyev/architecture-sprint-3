@@ -1,0 +1,224 @@
+openapi: 3.0.0
+info:
+  title: Device Managment
+  version: 0.1.0
+paths:
+  /add_device:
+    post:
+      summary: Add Device
+      operationId: add_device_add_device_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SDevice'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /status_device:
+    get:
+      summary: Status Device
+      operationId: status_device_status_device_get
+      parameters:
+        - name: serial_number
+          in: query
+          required: true
+          schema:
+            type: string
+            title: Serial Number
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /change_device_status:
+    put:
+      summary: Change Device Status
+      operationId: change_device_status_change_device_status_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SChangeDevice'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /add_sensor:
+    post:
+      summary: Add Sensor
+      operationId: add_sensor_add_sensor_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SSensor'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /get_target_temperature:
+    get:
+      summary: Get Target Temperature
+      operationId: get_target_temperature_get_target_temperature_get
+      parameters:
+        - name: device_id
+          in: query
+          required: true
+          schema:
+            type: string
+            title: Device Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /set_target_temperature:
+    put:
+      summary: Set Target Temperature
+      operationId: set_target_temperature_set_target_temperature_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/STargetTemperature'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SChangeDevice:
+      properties:
+        serial_number:
+          type: string
+          title: Serial Number
+        status:
+          type: boolean
+          title: Status
+      type: object
+      required:
+        - serial_number
+        - status
+      title: SChangeDevice
+    SDevice:
+      properties:
+        serial_number:
+          type: string
+          title: Serial Number
+        status:
+          anyOf:
+            - type: boolean
+          title: Status
+          default: false
+      type: object
+      required:
+        - serial_number
+      title: SDevice
+    SSensor:
+      properties:
+        serial_number:
+          type: string
+          title: Serial Number
+        device_id:
+          type: string
+          title: Device Id
+      type: object
+      required:
+        - serial_number
+        - device_id
+      title: SSensor
+    STargetTemperature:
+      properties:
+        device_id:
+          type: string
+          title: Device Id
+        temperature:
+          type: number
+          title: Temperature
+      type: object
+      required:
+        - device_id
+        - temperature
+      title: STargetTemperature
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError

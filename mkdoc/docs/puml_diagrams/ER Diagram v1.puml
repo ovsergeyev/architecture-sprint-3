@@ -9,18 +9,17 @@ entity house {
   + address
 }
 entity device {
-  + id
+  + serial_number
   + status
 }
 entity sensor {
-  + id
+  + serial_number
   + device_id
 }
 entity telemetry_data {
-  + id
-  + datetime
   + sensor_id
-  + data
+  + datetime
+  + value
 }
 
 
