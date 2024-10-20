@@ -24,7 +24,7 @@ async def add_device(device: SDevice):
   response = await Managment.add_device(device.model_dump())
   target_temperature = STargetTemperature(device_id=device.serial_number, temperature=18)
   await set_target_temperature(target_temperature)
-  return response
+  return True
 
 @app.get('/status_device')
 async def status_device(serial_number: str):
@@ -42,7 +42,7 @@ async def add_sensor(sensor: SSensor):
   if existing_sensor:
     raise HTTPException(status_code=400, detail="sensor is already registered")
   response = await Managment.add_sensor(sensor.model_dump())
-  return response
+  return True
 
 @app.get('/get_target_temperature')
 async def get_target_temperature(device_id: str):

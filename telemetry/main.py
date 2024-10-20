@@ -26,7 +26,7 @@ async def startup_event():
 async def shutdown_event():
   await producer.stop()
 
-@app.get('/set_current_temperature')
+@app.post('/set_current_temperature')
 async def write_sensor_data(serial_number: str, value: float):
   point = Point("sensors").tag("serial_number", serial_number).field("value", value).time(datetime.utcnow())
   write_api.write(bucket='home', record=point.to_line_protocol())
