@@ -29,7 +29,7 @@ async def add_device(device: SDevice):
 @app.get('/status_device')
 async def status_device(serial_number: str):
   device = await Managment.find_device_by_serial_number(serial_number)
-  return device.status
+  return device
 
 @app.put('/change_device_status')
 async def change_device_status(device: SChangeDevice):

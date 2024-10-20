@@ -30,6 +30,8 @@ def test_set_current_temperature():
 def test_get_status_device():
   print(f"Тестирование метода get_status_device")
   url = f"http://{host}:{gateway_port}/device-managment/status_device?serial_number={device_id}"
+  print(url)
+
 
   payload = {}
   headers = {
