@@ -5,6 +5,7 @@ from aiokafka import AIOKafkaProducer
 import asyncio
 from datetime import datetime
 from config import settings
+from schemas.STemperature import STemperature
 import json
 
 client = settings.client
@@ -27,13 +28,11 @@ async def shutdown_event():
   await producer.stop()
 
 @app.post('/set_current_temperature')
-async def write_sensor_data(serial_number: str, value: float):
-  point = Point("sensors").tag("serial_number", serial_number).field("value", value).time(datetime.utcnow())
+async def write_sensor_data(temperature: STemperature):
+  point = Point("sensors").tag("serial_number", temperature.serial_number).field("value", temperature.value).time(datetime.utcnow())
   write_api.write(bucket='home', record=point.to_line_protocol())
 
-  temperature = {"serial_number": serial_number, "value": value}
-
-  await producer.send_and_wait(settings.topic, json.dumps(temperature).encode('utf-8'))
+  await producer.send_and_wait(settings.topic, temperature.model_dump_json.encode('utf-8'))
   return {'status': 'ok'}
 
 @app.get('/last_temperature')
