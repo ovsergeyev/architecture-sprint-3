@@ -7,8 +7,8 @@ gateway_port = 8000
 device_id = str(uuid.uuid4())
 sensor_id = str(uuid.uuid4())
 
-def test_set_current_temperature():
-  print(f"Тестирование метода set_current_temperature")
+def test_add_device():
+  print(f"Тестирование метода add_device")
   url = f"http://{host}:{gateway_port}/device-managment/add_device"
 
   payload = json.dumps({
@@ -30,8 +30,6 @@ def test_set_current_temperature():
 def test_get_status_device():
   print(f"Тестирование метода get_status_device")
   url = f"http://{host}:{gateway_port}/device-managment/status_device?serial_number={device_id}"
-  print(url)
-
 
   payload = {}
   headers = {
@@ -157,7 +155,7 @@ def test_last_temperature():
   else:
     print(f"  Последняя температура с датчика - {response.text}")
 
-test_set_current_temperature()
+test_add_device()
 test_get_status_device()
 test_change_device_status()
 test_add_sensor()
